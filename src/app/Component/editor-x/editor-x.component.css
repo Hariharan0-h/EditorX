@@ -1,0 +1,1242 @@
+/* Table Grid Styles */
+.table-grid-container {
+  margin: 15px 0;
+}
+
+.table-grid-dimensions {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.table-grid {
+  display: inline-block;
+  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  padding: 5px;
+}
+
+.table-grid-row {
+  display: flex;
+}
+
+.table-grid-cell {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ddd;
+  margin: 2px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.table-grid-cell.active {
+  background-color: #4285f4;
+  border-color: #3367d6;
+}
+
+/* Table Styles in Editor */
+.editor-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 10px 0;
+  border: 2px solid #000 !important;
+  table-layout: fixed;
+}
+
+.editor-table td {
+  border: 1px solid #000 !important;
+  padding: 8px;
+  min-width: 50px;
+  min-height: 24px;
+  position: relative;
+  overflow: visible;
+}
+
+.editor-table-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 15px 0;
+  max-width: 100%;
+}
+
+/* Horizontal resizer (column width) */
+.editor-table-resizer.h-resize {
+  position: absolute;
+  width: 5px;
+  height: 100%;
+  background-color: transparent;
+  cursor: col-resize;
+  right: 0;
+  top: 0;
+  z-index: 10;
+}
+
+/* Vertical resizer (row height) */
+.editor-table-resizer.v-resize {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background-color: transparent;
+  cursor: row-resize;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+/* Active state for resizers */
+.table-resizer {
+  position: absolute;
+  top: 0;
+  right: -5px;
+  width: 10px;
+  height: 100%;
+  cursor: col-resize;
+  background-color: transparent;
+  z-index: 20;
+}
+
+.table-resizer:hover,
+.table-resizer.active {
+  background-color: #4285f4 !important;
+}
+
+/* Make sure tables have relative positioning for absolute positioned resizer */
+.editor-table {
+  position: relative !important;
+  width: 100%; /* Default width - now can be changed by the resizer */
+  margin: 10px 0;
+  border: 2px solid #000 !important;
+  table-layout: fixed;
+}
+
+/* Update existing editor-table styles to ensure the resizer works properly */
+.editor-table td {
+  border: 1px solid #000 !important;
+  padding: 8px;
+  min-width: 50px;
+  min-height: 24px;
+  position: relative;
+  overflow: visible;
+}
+
+.editor-table-resizer:hover,
+.editor-table-resizer.active {
+  background-color: #4285f4 !important;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.date {
+  font-size: 14px;
+  color: #666;
+}
+
+.toolbar {
+  padding: 10px 20px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.toolbar button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toolbar button:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.dropdown select {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+  font-size: 14px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.dropdown select:hover {
+  background-color: #f0f0f0;
+}
+
+.dropdown select:focus {
+  outline: none;
+  border-color: #66afe9;
+  box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+}
+
+/* Color Picker Styles */
+.color-picker {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.color-label {
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.color-picker input[type="color"] {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.separator {
+  width: 1px;
+  height: 24px;
+  background-color: #ccc;
+  margin: 0 10px;
+}
+
+.list-icon {
+  font-style: normal;
+  font-weight: bold;
+}
+
+.page-size-indicator {
+  margin-left: auto;
+  font-size: 12px;
+  color: #666;
+  background-color: #e9e9e9;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+
+.export-button, .fields-button, .table-button, .margin-button{
+  background-color: #4285f4;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
+.export-button:hover, .fields-button:hover, .table-button:hover, .margin-button:hover {
+  background-color: #3367d6;
+  color: #000;
+}
+
+.export-button {
+  background-color: #acc235;
+  color: rgb(0, 0, 0);
+}
+
+.export-button:hover {
+  background-color: #8ca045;
+}
+
+.editor-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  min-height: calc(100vh - 100px);
+  position: relative;
+  overflow: auto;
+}
+
+.pages-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  margin: 20px 0;
+}
+
+.editor-page {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Delete Page Button */
+.delete-page-button {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 24px;
+  height: 24px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 10;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.delete-page-button:hover {
+  background-color: #ff7875;
+}
+
+/* Hide delete button on first page if it's the only page */
+.editor-page:first-child:only-child .delete-page-button {
+  display: none;
+}
+
+.editor-canvas {
+  width: 210mm;
+  height: 297mm;
+  min-height: 297mm;
+  padding: 2cm;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+  transition: padding 0.3s ease, border 0.3s ease;
+}
+
+.editor-canvas:focus {
+  border-color: #66afe9;
+  box-shadow: 0 0 5px rgba(102, 175, 233, 0.5);
+}
+
+/* Zoom Controls */
+.zoom-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+.zoom-controls button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.zoom-controls span {
+  font-size: 12px;
+  margin: 0 5px;
+}
+
+/* Add Page Button */
+.add-page-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.add-page-button button {
+  padding: 8px 15px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.add-page-button button:hover {
+  background-color: #3367d6;
+}
+
+/* Modal Styles */
+.export-modal, .modal-overlay {
+  position: fixed;
+  z-index: 200;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.export-modal-content, .fields-modal-content, .table-modal-content, .margin-modal-content, .element-modal-content {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  width: 350px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.margin-modal-content {
+  width: 450px;
+}
+
+.export-modal-content h2, .fields-modal-content h2, .table-modal-content h2, .margin-modal-content h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+  text-align: center;
+}
+
+.export-options, .fields-list {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.export-options {
+  display: flex;
+  flex-direction: row;
+}
+
+.fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.export-options button, .field-button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.export-options button:hover, .field-button:hover {
+  background-color: #3367d6;
+}
+
+.field-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button {
+  background-color: #f1f1f1;
+  color: #333;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+}
+
+.close-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Margin and Border Settings Styles */
+
+/* Tab Styles */
+.settings-tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.tab-button:first-child {
+  border-top-left-radius: 4px;
+}
+
+.tab-button:last-child {
+  border-top-right-radius: 4px;
+}
+
+.tab-button.active {
+  background-color: #4285f4;
+  color: white;
+}
+
+.tab-button:hover:not(.active) {
+  background-color: #e0e0e0;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content p {
+  margin-top: 0;
+  color: #666;
+  text-align: center;
+}
+
+/* Margin Controls Container */
+.margin-controls-container {
+  display: flex;
+  margin: 20px 0;
+}
+
+.margin-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  flex: 1;
+}
+
+.margin-control {
+  display: flex;
+  align-items: center;
+}
+
+.margin-control label {
+  width: 60px;
+  font-size: 14px;
+  color: #333;
+}
+
+.margin-control input {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-align: right;
+}
+
+.margin-control .unit {
+  margin-left: 5px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Border Controls Container */
+.border-controls-container {
+  display: flex;
+  margin: 20px 0;
+}
+
+.border-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  flex: 1;
+}
+
+.border-control {
+  display: flex;
+  align-items: center;
+}
+
+.border-control.disabled label {
+  color: #999;
+}
+
+.border-control label {
+  width: 70px;
+  font-size: 14px;
+  color: #333;
+}
+
+.border-control input[type="number"] {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-align: right;
+}
+
+.border-control input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.border-control input[type="color"] {
+  width: 60px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.border-control select {
+  width: 100px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.border-control .unit {
+  margin-left: 5px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* Margin Preview Styles */
+.margin-preview, .border-preview {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.page-outline {
+  position: relative;
+  width: 100px;
+  height: 141px; /* A4 aspect ratio: 1:1.414 */
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.content-area {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.margin-indicator {
+  position: absolute;
+  background-color: rgba(66, 133, 244, 0.3);
+  z-index: 2;
+}
+
+.margin-indicator.top {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.margin-indicator.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.margin-indicator.left {
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.margin-indicator.right {
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Margin Buttons */
+.margin-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.reset-button {
+  background-color: #f1f1f1;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reset-button:hover {
+  background-color: #e0e0e0;
+}
+
+.apply-button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.apply-button:hover {
+  background-color: #3367d6;
+}
+
+.border-sides-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.border-sides-container.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.border-side {
+  border: 1px solid #eee;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.border-side h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+  text-align: center;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+/* Border Container Styles */
+.border-container {
+  pointer-events: none; /* Allow editing through the border */
+  box-sizing: border-box;
+}
+
+/* Page outline for the preview */
+.page-outline {
+  position: relative;
+  width: 100px;
+  height: 141px; /* A4 aspect ratio: 1:1.414 */
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+/* Inset border for the preview */
+.border-inset {
+  position: absolute;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* Margin indicators */
+.margin-indicator {
+  position: absolute;
+  background-color: rgba(66, 133, 244, 0.3);
+  z-index: 2;
+}
+
+.margin-indicator.top {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.margin-indicator.bottom {
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.margin-indicator.left {
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.margin-indicator.right {
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+/* Make sure the editor canvas can position elements absolutely */
+.editor-canvas {
+  position: relative !important;
+}
+
+.element-button {
+  background-color: #4285f4;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.element-button svg {
+  margin-right: 5px;
+}
+
+.element-button:hover {
+  background-color: #3367d6;
+}
+
+/* Styles for draggable and resizable elements */
+.editor-element {
+  position: relative;
+  margin: 10px auto;
+  display: block;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+}
+
+.editor-element:hover {
+  border: 1px dashed #4285f4;
+}
+
+.editor-element.selected {
+  border: 1px solid #4285f4;
+}
+
+/* Delete button for elements */
+.delete-element-button {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 24px;
+  height: 24px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.editor-element:hover .delete-element-button,
+.editor-element.selected .delete-element-button,
+.editor-table-wrapper:hover .delete-element-button {
+  opacity: 1;
+}
+
+.delete-element-button:hover {
+  background-color: #ff7875;
+  transform: scale(1.1);
+}
+
+.editor-element .resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border: 1px solid #4285f4;
+  border-radius: 50%;
+  z-index: 100;
+}
+
+.editor-element .resize-handle.top-left {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.editor-element .resize-handle.top-right {
+  top: -5px;
+  right: -5px;
+  cursor: nesw-resize;
+}
+
+.editor-element .resize-handle.bottom-left {
+  bottom: -5px;
+  left: -5px;
+  cursor: nesw-resize;
+}
+
+.editor-element .resize-handle.bottom-right {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
+}
+
+.editor-element .resize-handle.top-center {
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.editor-element .resize-handle.bottom-center {
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.editor-element .resize-handle.middle-left {
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+.editor-element .resize-handle.middle-right {
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+/* Hide resize handles when not selected */
+.editor-element:not(.selected) .resize-handle {
+  display: none;
+}
+
+/* Show resize handles when selected */
+.editor-element.selected .resize-handle {
+  display: block;
+}
+
+.editor-element .move-handle {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4285f4;
+  color: white;
+  padding: 2px 5px;
+  font-size: 10px;
+  border-radius: 3px;
+  cursor: move;
+  z-index: 100;
+  display: none;
+}
+
+.editor-element:hover .move-handle {
+  display: block;
+}
+
+/* Image specific styles */
+.editor-image {
+  min-width: 50px;
+  min-height: 50px;
+}
+
+.editor-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Shape specific styles */
+.editor-shape {
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.shape-rectangle {
+  background-color: #f0f0f0;
+  border: 1px solid #999;
+}
+
+.shape-circle {
+  background-color: #f0f0f0;
+  border: 1px solid #999;
+  border-radius: 50%;
+}
+
+.shape-triangle {
+  width: 0;
+  height: 0;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 50px solid #f0f0f0;
+  background-color: transparent;
+}
+
+/* Line specific styles */
+.editor-line {
+  min-width: 100px;
+  min-height: 2px;
+  background-color: #000;
+}
+
+.line-horizontal {
+  height: 2px;
+  width: 100%;
+}
+
+.line-vertical {
+  width: 2px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+/* Modal styles for image, shape, and line */
+.element-modal-content {
+  width: 400px;
+  max-width: 90%;
+}
+
+.element-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.shape-option, .line-option {
+  width: 80px;
+  height: 80px;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+.shape-option:hover, .line-option:hover {
+  border-color: #4285f4;
+  background-color: #e6f0ff;
+}
+
+.shape-option.selected, .line-option.selected {
+  border: 2px solid #4285f4;
+  background-color: #e6f0ff;
+}
+
+.upload-area {
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  margin: 15px 0;
+  cursor: pointer;
+  background-color: #f9f9f9;
+}
+
+.upload-area:hover {
+  border-color: #4285f4;
+  background-color: #e6f0ff;
+}
+
+.upload-area svg {
+  margin-bottom: 10px;
+}
+
+.upload-area p {
+  margin: 5px 0 0;
+  color: #666;
+}
+
+.file-input {
+  display: none;
+}
+
+/* Enhanced Resize Controls CSS */
+
+/* Rotation handle */
+.editor-element .rotate-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border: 1px solid #4285f4;
+  border-radius: 50%;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><path d='M23 4v6h-6'/><path d='M20.49 15a9 9 0 1 1-2.12-9.36L23 10'/></svg>") 8 8, auto;
+  z-index: 100;
+}
+
+/* Connection line for rotate handle */
+.editor-element .rotate-line {
+  position: absolute;
+  width: 1px;
+  height: 15px;
+  background-color: #4285f4;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+}
+
+/* Hide rotation handle when not selected */
+.editor-element:not(.selected) .rotate-handle,
+.editor-element:not(.selected) .rotate-line {
+  display: none;
+}
+
+/* Show rotation handle when selected */
+.editor-element.selected .rotate-handle,
+.editor-element.selected .rotate-line {
+  display: block;
+}
+
+/* Make handles more visible on hover */
+.editor-element .resize-handle:hover,
+.editor-element .rotate-handle:hover {
+  background-color: #4285f4;
+  border-color: white;
+}
+
+/* Element in dragging state */
+.editor-element.dragging {
+  opacity: 0.7;
+  cursor: move;
+}
+
+/* Element in resizing state */
+.editor-element.resizing {
+  opacity: 0.8;
+}
+
+/* Table dragging styles */
+.editor-table-wrapper {
+  cursor: move;
+  position: relative;
+}
+
+.editor-table-wrapper.dragging {
+  opacity: 0.7;
+}
+
+/* URL input for image modal */
+.url-input-container {
+  margin: 15px 0;
+}
+
+.url-input-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.full-width-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+/* Size options for elements */
+.size-options {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 10px;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.size-options label {
+  font-size: 14px;
+  color: #333;
+}
+
+.size-options input {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Color options for shapes and lines */
+.color-options {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-gap: 10px;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.color-options label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Modal buttons */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.shape-properties,
+.line-properties {
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}

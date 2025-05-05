@@ -1,0 +1,690 @@
+<div class="header">
+  <h1 class="title">Auro Editor</h1>
+  <div class="date">{{ currentDate }}</div>
+</div>
+<div class="toolbar">
+  <button (click)="formatDoc('bold')" title="Bold (Ctrl+B)"><b>B</b></button>
+  <button (click)="formatDoc('italic')" title="Italic (Ctrl+I)"><i>I</i></button>
+  <button (click)="formatDoc('underline')" title="Underline (Ctrl+U)"><u>U</u></button>
+  
+  <div class="separator"></div>
+  
+  <div class="dropdown">
+    <select (change)="formatFont($event)" title="Font Family">
+      <option value="">Font</option>
+      <option value="Arial">Arial</option>
+      <option value="Calibri">Calibri</option>
+      <option value="Comic Sans MS">Comic Sans MS</option>
+      <option value="Courier New">Courier New</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Helvetica">Helvetica</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Trebuchet MS">Trebuchet MS</option>
+      <option value="Verdana">Verdana</option>
+    </select>
+  </div>
+  
+  <div class="dropdown">
+    <select (change)="formatFontSize($event)" title="Font Size">
+      <option value="">Size</option>
+      <option value="1">8pt</option>
+      <option value="2">10pt</option>
+      <option value="3">12pt</option>
+      <option value="4">14pt</option>
+      <option value="5">18pt</option>
+      <option value="6">24pt</option>
+      <option value="7">36pt</option>
+    </select>
+  </div>
+  
+  <div class="color-picker">
+    <span class="color-label">Color</span>
+    <input type="color" (change)="formatFontColor($event)" value="#000000" title="Font Color">
+  </div>
+  
+  <div class="separator"></div>
+  
+  <button (click)="formatDoc('insertUnorderedList')" title="Bullet List"><i class="list-icon">•</i></button>
+  <button (click)="formatDoc('insertOrderedList')" title="Numbered List"><i class="list-icon">1.</i></button>
+  <button (click)="formatDoc('justifyLeft')" title="Align Left">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 5h18v2H3V5zm0 6h12v2H3v-2zm0 6h18v2H3v-2z"/>
+    </svg>
+  </button>
+  <button (click)="formatDoc('justifyCenter')" title="Align Center">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 5h18v2H3V5zm3 6h12v2H6v-2zm-3 6h18v2H3v-2z"/>
+    </svg>
+  </button>
+  <button (click)="formatDoc('justifyRight')" title="Align Right">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 5h18v2H3V5zm6 6h12v2H9v-2zm-6 6h18v2H3v-2z"/>
+    </svg>
+  </button>
+  
+  <div class="separator"></div>
+  
+  <button (click)="openFieldsModal()" class="fields-button" title="Insert Fields">
+    Fields
+  </button>
+  
+  <button (click)="openTableModal()" class="table-button" title="Insert Table">
+    Table
+  </button>
+
+  <div class="separator"></div>
+
+  <button (click)="openImageModal()" class="element-button" title="Insert Image">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+      <circle cx="8.5" cy="8.5" r="1.5"/>
+      <polyline points="21 15 16 10 5 21"/>
+    </svg>
+    Image
+  </button>
+
+  <button (click)="openShapeModal()" class="element-button" title="Insert Shape">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="7" height="7"/>
+      <rect x="14" y="3" width="7" height="7"/>
+      <rect x="14" y="14" width="7" height="7"/>
+      <rect x="3" y="14" width="7" height="7"/>
+    </svg>
+    Shapes
+  </button>
+
+  <button (click)="openLineModal()" class="element-button" title="Insert Line">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <line x1="12" y1="5" x2="12" y2="19" transform="rotate(0 12 12)"/>
+    </svg>
+    Lines
+  </button>
+  
+  <span class="page-size-indicator">
+    <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <line x1="3" y1="9" x2="21" y2="9"/>
+    </svg>
+    A4
+  </span>
+  
+  <!-- Margin Button -->
+  <button (click)="openMarginModal()" class="margin-button" title="Page Margins">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <line x1="6" y1="3" x2="6" y2="21"/>
+      <line x1="18" y1="3" x2="18" y2="21"/>
+      <line x1="3" y1="6" x2="21" y2="6"/>
+      <line x1="3" y1="18" x2="21" y2="18"/>
+    </svg>
+    Margins
+  </button>
+  
+  <button (click)="openExportModal()" class="export-button">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Export
+  </button>
+</div>
+<div class="editor-content">
+  <div class="zoom-controls">
+    <button (click)="zoomOut()" title="Zoom Out">-</button>
+    <span>{{ zoomLevel }}%</span>
+    <button (click)="zoomIn()" title="Zoom In">+</button>
+  </div>
+  
+  <div class="pages-container" [style.transform]="'scale(' + (zoomLevel / 100) + ')'">
+    <div *ngFor="let page of pages; let i = index" class="editor-page">
+      <!-- Delete Page Button -->
+      <button 
+        class="delete-page-button" 
+        (click)="deletePage(i)" 
+        title="Delete Page"
+        *ngIf="pages.length > 1">X</button>
+      
+      <div 
+        #editorCanvas
+        class="editor-canvas" 
+        [attr.data-page]="i"
+        contenteditable="true"
+        (keydown)="handleKeyDown($event)"
+        (paste)="handlePaste($event)"
+        (click)="saveCurrentSelection()"
+        (focus)="saveCurrentSelection()">
+        
+      </div>
+    </div>
+  </div>
+  
+  <div class="add-page-button">
+    <button (click)="addPage()" title="Add Page">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <line x1="12" y1="8" x2="12" y2="16"/>
+        <line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+      Add Page
+    </button>
+  </div>
+  
+  <!-- Export Modal -->
+  <div class="export-modal" *ngIf="showExportModal">
+    <div class="export-modal-content">
+      <h2>Export Document</h2>
+      <p>Choose your preferred export format</p>
+      <div class="export-options">
+        <button (click)="exportAs('pdf')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          PDF
+        </button>
+        <button (click)="exportAs('html')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+          HTML
+        </button>
+      </div>
+      <button class="close-button" (click)="closeExportModal()">Cancel</button>
+    </div>
+  </div>
+  
+  <!-- Fields Modal -->
+  <div class="modal-overlay" *ngIf="showFieldsModal">
+    <div class="fields-modal-content">
+      <h2>Insert Field</h2>
+      <p>Select a field to insert at cursor position</p>
+      <div class="fields-list">
+        <button (click)="insertField('name')" class="field-button">Name</button>
+        <button (click)="insertField('age')" class="field-button">Age</button>
+        <button (click)="insertField('gender')" class="field-button">Gender</button>
+      </div>
+      <button class="close-button" (click)="closeFieldsModal()">Cancel</button>
+    </div>
+  </div>
+  
+  <!-- Table Modal -->
+  <div class="modal-overlay" *ngIf="showTableModal">
+    <div class="table-modal-content">
+      <h2>Insert Table</h2>
+      <p>Select table dimensions</p>
+      <div class="table-grid-container">
+        <div class="table-grid-dimensions">{{ gridRows }} × {{ gridCols }}</div>
+        <div class="table-grid">
+          <div 
+            *ngFor="let row of [].constructor(maxGridRows); let i = index" 
+            class="table-grid-row">
+            <div 
+              *ngFor="let col of [].constructor(maxGridCols); let j = index" 
+              class="table-grid-cell"
+              [class.active]="i < gridRows && j < gridCols"
+              (mouseover)="updateGridSelection(i+1, j+1)"
+              (click)="insertTable()">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="close-button" (click)="closeTableModal()">Cancel</button>
+    </div>
+  </div>
+  
+  <!-- Margin Settings Modal -->
+  <div class="modal-overlay" *ngIf="showMarginModal">
+    <div class="margin-modal-content">
+      <h2>Page Settings</h2>
+      
+      <!-- Tabs for Margins and Border -->
+      <div class="settings-tabs">
+        <button class="tab-button" [class.active]="activeTab === 'margins-tab'" (click)="switchTab('margins-tab')">Margins</button>
+        <button class="tab-button" [class.active]="activeTab === 'border-tab'" (click)="switchTab('border-tab')">Border</button>
+      </div>
+      
+      <!-- Margins Tab -->
+      <div class="tab-content" [class.active]="activeTab === 'margins-tab'">
+        <p>Set page margins in centimeters (cm)</p>
+        
+        <div class="margin-controls-container">
+          <div class="margin-controls">
+            <!-- Top Margin -->
+            <div class="margin-control">
+              <label for="topMargin">Top</label>
+              <input 
+                type="number" 
+                id="topMargin" 
+                [value]="margins.top" 
+                (input)="onMarginChange($event, 'top')" 
+                min="0" 
+                max="10" 
+                step="0.1">
+              <span class="unit">cm</span>
+            </div>
+            
+            <!-- Bottom Margin -->
+            <div class="margin-control">
+              <label for="bottomMargin">Bottom</label>
+              <input 
+                type="number" 
+                id="bottomMargin" 
+                [value]="margins.bottom" 
+                (input)="onMarginChange($event, 'bottom')" 
+                min="0" 
+                max="10" 
+                step="0.1">
+              <span class="unit">cm</span>
+            </div>
+            
+            <!-- Left Margin -->
+            <div class="margin-control">
+              <label for="leftMargin">Left</label>
+              <input 
+                type="number" 
+                id="leftMargin" 
+                [value]="margins.left" 
+                (input)="onMarginChange($event, 'left')" 
+                min="0" 
+                max="10" 
+                step="0.1">
+              <span class="unit">cm</span>
+            </div>
+            
+            <!-- Right Margin -->
+            <div class="margin-control">
+              <label for="rightMargin">Right</label>
+              <input 
+                type="number" 
+                id="rightMargin" 
+                [value]="margins.right" 
+                (input)="onMarginChange($event, 'right')" 
+                min="0" 
+                max="10" 
+                step="0.1">
+              <span class="unit">cm</span>
+            </div>
+          </div>
+          
+          <!-- Visual representation of margins -->
+          <div class="margin-preview">
+            <div class="page-outline">
+              <div class="margin-indicator top" [style.height.px]="margins.top * 10"></div>
+              <div class="margin-indicator bottom" [style.height.px]="margins.bottom * 10"></div>
+              <div class="margin-indicator left" [style.width.px]="margins.left * 10"></div>
+              <div class="margin-indicator right" [style.width.px]="margins.right * 10"></div>
+              <div class="content-area" 
+                  [style.border]="margins.showBorder ? margins.borderWidth + 'px ' + margins.borderStyle + ' ' + margins.borderColor : 'none'">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Border Tab -->
+      <div class="tab-content" [class.active]="activeTab === 'border-tab'">
+        
+        <div class="border-controls-container">
+          <!-- Border Tab -->
+          <div class="tab-content" [class.active]="activeTab === 'border-tab'">
+            <p>Set page border options</p>
+            
+            <div class="border-controls-container">
+              <!-- Border Toggle -->
+              <div class="border-control full-width">
+                <label for="showBorder">Show Border</label>
+                <input 
+                  type="checkbox" 
+                  id="showBorder" 
+                  [checked]="margins.showBorder" 
+                  (change)="onBorderToggle($event)">
+              </div>
+              
+              <!-- Common Border Controls -->
+              <div class="border-sides-container" [class.disabled]="!margins.showBorder">
+                <div class="border-side full-width">
+                  <h4>Border Settings</h4>
+                  <!-- Border Width -->
+                  <div class="border-control">
+                    <label for="borderWidth">Width</label>
+                    <input 
+                      type="number" 
+                      id="borderWidth" 
+                      [value]="margins.borderWidth" 
+                      (input)="onCommonBorderChange($event, 'Width')" 
+                      min="1" 
+                      max="10" 
+                      step="1"
+                      [disabled]="!margins.showBorder">
+                    <span class="unit">px</span>
+                  </div>
+                  
+                  <!-- Border Style -->
+                  <div class="border-control">
+                    <label for="borderStyle">Style</label>
+                    <select 
+                      id="borderStyle" 
+                      [value]="margins.borderStyle" 
+                      (change)="onCommonBorderChange($event, 'Style')"
+                      [disabled]="!margins.showBorder">
+                      <option *ngFor="let style of borderStyles" [value]="style.value">{{ style.label }}</option>
+                    </select>
+                  </div>
+                  
+                  <!-- Border Color -->
+                  <div class="border-control">
+                    <label for="borderColor">Color</label>
+                    <input 
+                      type="color" 
+                      id="borderColor" 
+                      [value]="margins.borderColor" 
+                      (input)="onCommonBorderChange($event, 'Color')"
+                      [disabled]="!margins.showBorder">
+                  </div>
+                </div>
+                
+                <!-- Border Space Controls (from edge of paper) -->
+                <div class="border-side full-width">
+                  <h4>Border Space (from edge of paper)</h4>
+                  
+                  <!-- Top Border Space -->
+                  <div class="border-control">
+                    <label for="borderTopSpace">Top</label>
+                    <input 
+                      type="number" 
+                      id="borderTopSpace" 
+                      [value]="margins.top" 
+                      (input)="onMarginChange($event, 'top')" 
+                      min="0" 
+                      max="10" 
+                      step="0.1"
+                      [disabled]="!margins.showBorder">
+                    <span class="unit">cm</span>
+                  </div>
+                  
+                  <!-- Bottom Border Space -->
+                  <div class="border-control">
+                    <label for="borderBottomSpace">Bottom</label>
+                    <input 
+                      type="number" 
+                      id="borderBottomSpace" 
+                      [value]="margins.bottom" 
+                      (input)="onMarginChange($event, 'bottom')" 
+                      min="0" 
+                      max="10" 
+                      step="0.1"
+                      [disabled]="!margins.showBorder">
+                    <span class="unit">cm</span>
+                  </div>
+                  
+                  <!-- Left Border Space -->
+                  <div class="border-control">
+                    <label for="borderLeftSpace">Left</label>
+                    <input 
+                      type="number" 
+                      id="borderLeftSpace" 
+                      [value]="margins.left" 
+                      (input)="onMarginChange($event, 'left')" 
+                      min="0" 
+                      max="10" 
+                      step="0.1"
+                      [disabled]="!margins.showBorder">
+                    <span class="unit">cm</span>
+                  </div>
+                  
+                  <!-- Right Border Space -->
+                  <div class="border-control">
+                    <label for="borderRightSpace">Right</label>
+                    <input 
+                      type="number" 
+                      id="borderRightSpace" 
+                      [value]="margins.right" 
+                      (input)="onMarginChange($event, 'right')" 
+                      min="0" 
+                      max="10" 
+                      step="0.1"
+                      [disabled]="!margins.showBorder">
+                    <span class="unit">cm</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Visual representation of border -->
+              <div class="border-preview">
+                <div class="page-outline">
+                  <!-- Border container to show the inset border -->
+                  <div class="border-inset" 
+                       [style.top.px]="margins.top * 10"
+                       [style.bottom.px]="margins.bottom * 10"
+                       [style.left.px]="margins.left * 10"
+                       [style.right.px]="margins.right * 10"
+                       [style.border]="margins.showBorder ? margins.borderWidth + 'px ' + margins.borderStyle + ' ' + margins.borderColor : 'none'">
+                  </div>
+                  
+                  <!-- The margin indicators are now just for visual reference -->
+                  <div class="margin-indicator top" [style.height.px]="margins.top * 10"></div>
+                  <div class="margin-indicator bottom" [style.height.px]="margins.bottom * 10"></div>
+                  <div class="margin-indicator left" [style.width.px]="margins.left * 10"></div>
+                  <div class="margin-indicator right" [style.width.px]="margins.right * 10"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="margin-buttons">
+        <button class="reset-button" (click)="resetMargins()">Reset to Default</button>
+        <button class="apply-button" (click)="applyMargins()">Apply</button>
+        <button class="close-button" (click)="closeMarginModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="modal-overlay" *ngIf="showImageModal">
+    <div class="element-modal-content">
+      <h2>Insert Image</h2>
+      <p>Upload an image or provide an image URL</p>
+      
+      <!-- Image Upload Area -->
+      <div class="upload-area" (click)="triggerFileInput()">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <h3>Upload Image</h3>
+        <p>Click to browse or drag & drop</p>
+        <input #fileInput type="file" class="file-input" accept="image/*" (change)="handleImageUpload($event)">
+      </div>
+      
+      <!-- URL Input Option -->
+      <div class="url-input-container">
+        <label for="imageUrl">Or enter image URL:</label>
+        <input 
+          type="text" 
+          id="imageUrl" 
+          placeholder="https://example.com/image.jpg"
+          [(ngModel)]="imageUrl"
+          class="full-width-input">
+      </div>
+      
+      <!-- Image Size Options (optional) -->
+      <div class="size-options">
+        <label for="imageWidth">Width (px):</label>
+        <input 
+          type="number" 
+          id="imageWidth" 
+          placeholder="Auto"
+          [(ngModel)]="imageWidth"
+          min="50" 
+          max="1000">
+          
+        <label for="imageHeight">Height (px):</label>
+        <input 
+          type="number" 
+          id="imageHeight" 
+          placeholder="Auto"
+          [(ngModel)]="imageHeight"
+          min="50" 
+          max="1000">
+      </div>
+      
+      <!-- Buttons -->
+      <div class="modal-buttons">
+        <button class="apply-button" (click)="insertImage()" [disabled]="!imageFile && !imageUrl">Insert</button>
+        <button class="close-button" (click)="closeImageModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shape Modal -->
+  <div class="modal-overlay" *ngIf="showShapeModal">
+    <div class="element-modal-content">
+      <h2>Insert Shape</h2>
+      <p>Select a shape to insert</p>
+      
+      <div class="element-options">
+        <!-- Rectangle Option -->
+        <div 
+          class="shape-option" 
+          [class.selected]="selectedShape === 'rectangle'"
+          (click)="selectShape('rectangle')">
+          <div style="width: 50px; height: 40px; background-color: #f0f0f0; border: 1px solid #999;"></div>
+        </div>
+        
+        <!-- Circle Option -->
+        <div 
+          class="shape-option" 
+          [class.selected]="selectedShape === 'circle'"
+          (click)="selectShape('circle')">
+          <div style="width: 50px; height: 50px; background-color: #f0f0f0; border: 1px solid #999; border-radius: 50%;"></div>
+        </div>
+        
+        <!-- Triangle Option -->
+        <div 
+          class="shape-option" 
+          [class.selected]="selectedShape === 'triangle'"
+          (click)="selectShape('triangle')">
+          <div style="width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 40px solid #f0f0f0;"></div>
+        </div>
+      </div>
+      
+      <!-- Shape Size and Color -->
+      <div class="shape-properties">
+        <div class="size-options">
+          <label for="shapeWidth">Width (px):</label>
+          <input 
+            type="number" 
+            id="shapeWidth" 
+            [(ngModel)]="shapeWidth"
+            min="30" 
+            max="500"
+            value="100">
+            
+          <label for="shapeHeight">Height (px):</label>
+          <input 
+            type="number" 
+            id="shapeHeight" 
+            [(ngModel)]="shapeHeight"
+            min="30" 
+            max="500"
+            value="100">
+        </div>
+        
+        <div class="color-options">
+          <label for="shapeFill">Fill Color:</label>
+          <input 
+            type="color" 
+            id="shapeFill" 
+            [(ngModel)]="shapeFillColor"
+            value="#f0f0f0">
+            
+          <label for="shapeBorder">Border Color:</label>
+          <input 
+            type="color" 
+            id="shapeBorder" 
+            [(ngModel)]="shapeBorderColor"
+            value="#999999">
+        </div>
+      </div>
+      
+      <!-- Buttons -->
+      <div class="modal-buttons">
+        <button class="apply-button" (click)="insertShape()" [disabled]="!selectedShape">Insert</button>
+        <button class="close-button" (click)="closeShapeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Line Modal -->
+  <div class="modal-overlay" *ngIf="showLineModal">
+    <div class="element-modal-content">
+      <h2>Insert Line</h2>
+      <p>Select a line orientation</p>
+      
+      <div class="element-options">
+        <!-- Horizontal Line Option -->
+        <div 
+          class="line-option" 
+          [class.selected]="selectedLine === 'horizontal'"
+          (click)="selectLine('horizontal')">
+          <div style="width: 60px; height: 2px; background-color: #000;"></div>
+        </div>
+        
+        <!-- Vertical Line Option -->
+        <div 
+          class="line-option" 
+          [class.selected]="selectedLine === 'vertical'"
+          (click)="selectLine('vertical')">
+          <div style="width: 2px; height: 60px; background-color: #000;"></div>
+        </div>
+      </div>
+      
+      <!-- Line Properties -->
+      <div class="line-properties">
+        <div class="size-options">
+          <label for="lineLength">Length (px):</label>
+          <input 
+            type="number" 
+            id="lineLength" 
+            [(ngModel)]="lineLength"
+            min="50" 
+            max="1000"
+            value="200">
+            
+          <label for="lineThickness">Thickness (px):</label>
+          <input 
+            type="number" 
+            id="lineThickness" 
+            [(ngModel)]="lineThickness"
+            min="1" 
+            max="20"
+            value="2">
+        </div>
+        
+        <div class="color-options">
+          <label for="lineColor">Color:</label>
+          <input 
+            type="color" 
+            id="lineColor" 
+            [(ngModel)]="lineColor"
+            value="#000000">
+        </div>
+      </div>
+      
+      <!-- Buttons -->
+      <div class="modal-buttons">
+        <button class="apply-button" (click)="insertLine()" [disabled]="!selectedLine">Insert</button>
+        <button class="close-button" (click)="closeLineModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
