@@ -42,6 +42,7 @@
   margin: 10px 0;
   border: 2px solid #000 !important;
   table-layout: fixed;
+  position: relative !important;
 }
 
 .editor-table td {
@@ -58,6 +59,7 @@
   display: inline-block;
   margin: 15px 0;
   max-width: 100%;
+  cursor: move;
 }
 
 /* Horizontal resizer (column width) */
@@ -97,34 +99,13 @@
 }
 
 .table-resizer:hover,
-.table-resizer.active {
-  background-color: #4285f4 !important;
-}
-
-/* Make sure tables have relative positioning for absolute positioned resizer */
-.editor-table {
-  position: relative !important;
-  width: 100%; /* Default width - now can be changed by the resizer */
-  margin: 10px 0;
-  border: 2px solid #000 !important;
-  table-layout: fixed;
-}
-
-/* Update existing editor-table styles to ensure the resizer works properly */
-.editor-table td {
-  border: 1px solid #000 !important;
-  padding: 8px;
-  min-width: 50px;
-  min-height: 24px;
-  position: relative;
-  overflow: visible;
-}
-
+.table-resizer.active,
 .editor-table-resizer:hover,
 .editor-table-resizer.active {
   background-color: #4285f4 !important;
 }
 
+/* Header and Title Styles */
 .header {
   display: flex;
   justify-content: space-between;
@@ -145,6 +126,7 @@
   color: #666;
 }
 
+/* Toolbar Styles */
 .toolbar {
   padding: 10px 20px;
   background-color: #f9f9f9;
@@ -237,7 +219,7 @@
   margin-right: 10px;
 }
 
-.export-button, .fields-button, .table-button, .margin-button{
+.export-button, .fields-button, .table-button, .margin-button, .element-button {
   background-color: #4285f4;
   color: rgb(0, 0, 0);
   border: none;
@@ -246,9 +228,16 @@
   cursor: pointer;
   font-size: 14px;
   margin-right: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.export-button:hover, .fields-button:hover, .table-button:hover, .margin-button:hover {
+.element-button svg {
+  margin-right: 5px;
+}
+
+.export-button:hover, .fields-button:hover, .table-button:hover, .margin-button:hover, .element-button:hover {
   background-color: #3367d6;
   color: #000;
 }
@@ -332,6 +321,7 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   box-sizing: border-box;
   transition: padding 0.3s ease, border 0.3s ease;
+  position: relative !important;
 }
 
 .editor-canvas:focus {
@@ -421,7 +411,7 @@
   width: 450px;
 }
 
-.export-modal-content h2, .fields-modal-content h2, .table-modal-content h2, .margin-modal-content h2 {
+.export-modal-content h2, .fields-modal-content h2, .table-modal-content h2, .margin-modal-content h2, .element-modal-content h2 {
   margin-top: 0;
   color: #333;
   font-size: 20px;
@@ -483,8 +473,6 @@
 }
 
 /* Margin and Border Settings Styles */
-
-/* Tab Styles */
 .settings-tabs {
   display: flex;
   border-bottom: 1px solid #ddd;
@@ -765,15 +753,6 @@
   box-sizing: border-box;
 }
 
-/* Page outline for the preview */
-.page-outline {
-  position: relative;
-  width: 100px;
-  height: 141px; /* A4 aspect ratio: 1:1.414 */
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-}
-
 /* Inset border for the preview */
 .border-inset {
   position: absolute;
@@ -781,72 +760,15 @@
   pointer-events: none;
 }
 
-/* Margin indicators */
-.margin-indicator {
-  position: absolute;
-  background-color: rgba(66, 133, 244, 0.3);
-  z-index: 2;
-}
-
-.margin-indicator.top {
-  top: 0;
-  left: 0;
-  right: 0;
-}
-
-.margin-indicator.bottom {
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.margin-indicator.left {
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-
-.margin-indicator.right {
-  top: 0;
-  right: 0;
-  bottom: 0;
-}
-
-/* Make sure the editor canvas can position elements absolutely */
-.editor-canvas {
-  position: relative !important;
-}
-
-.element-button {
-  background-color: #4285f4;
-  color: rgb(0, 0, 0);
-  border: none;
-  border-radius: 3px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.element-button svg {
-  margin-right: 5px;
-}
-
-.element-button:hover {
-  background-color: #3367d6;
-}
-
 /* Styles for draggable and resizable elements */
 .editor-element {
-  position: relative;
-  margin: 10px auto;
-  display: block;
-  max-width: 100%;
-  box-sizing: border-box;
+  position: absolute;
   border: 1px solid transparent;
+  margin: 10px;
+  cursor: move;
+  min-width: 30px;
+  min-height: 30px;
+  box-sizing: border-box;
 }
 
 .editor-element:hover {
@@ -860,8 +782,8 @@
 /* Delete button for elements */
 .delete-element-button {
   position: absolute;
-  top: -15px;
-  right: -15px;
+  top: -12px;
+  right: -12px;
   width: 24px;
   height: 24px;
   background-color: #ff4d4f;
@@ -875,7 +797,7 @@
   font-size: 16px;
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  z-index: 100;
+  z-index: 150;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -891,37 +813,44 @@
   transform: scale(1.1);
 }
 
+/* FIX: Resize handles styling - made visible by default */
 .editor-element .resize-handle {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   background-color: white;
-  border: 1px solid #4285f4;
+  border: 2px solid #4285f4;
   border-radius: 50%;
   z-index: 100;
+  display: none;
 }
 
+.editor-element.selected .resize-handle {
+  display: block;
+}
+
+/* Position the resize handles at the corners only for simplicity */
 .editor-element .resize-handle.top-left {
-  top: -5px;
-  left: -5px;
+  top: -6px;
+  left: -6px;
   cursor: nwse-resize;
 }
 
 .editor-element .resize-handle.top-right {
-  top: -5px;
-  right: -5px;
+  top: -6px;
+  right: -6px;
   cursor: nesw-resize;
 }
 
 .editor-element .resize-handle.bottom-left {
-  bottom: -5px;
-  left: -5px;
+  bottom: -6px;
+  left: -6px;
   cursor: nesw-resize;
 }
 
 .editor-element .resize-handle.bottom-right {
-  bottom: -5px;
-  right: -5px;
+  bottom: -6px;
+  right: -6px;
   cursor: nwse-resize;
 }
 
@@ -953,45 +882,96 @@
   cursor: ew-resize;
 }
 
-/* Hide resize handles when not selected */
-.editor-element:not(.selected) .resize-handle {
-  display: none;
+/* Make handles more visible on hover */
+.editor-element .resize-handle:hover {
+  background-color: #4285f4;
+  border-color: white;
+  transform: scale(1.2);
 }
 
-/* Show resize handles when selected */
-.editor-element.selected .resize-handle {
-  display: block;
+.editor-element .resize-handle.top-center:hover,
+.editor-element .resize-handle.bottom-center:hover {
+  transform: scale(1.1) translateX(-45%);
 }
 
-.editor-element .move-handle {
+.editor-element .resize-handle.middle-left:hover,
+.editor-element .resize-handle.middle-right:hover {
+  transform: scale(1.1) translateY(-45%);
+}
+
+/* Rotation handle */
+.editor-element .rotate-handle {
   position: absolute;
-  top: -20px;
+  width: 12px;
+  height: 12px;
+  background-color: white;
+  border: 1px solid #4285f4;
+  border-radius: 50%;
+  top: -25px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #4285f4;
-  color: white;
-  padding: 2px 5px;
-  font-size: 10px;
-  border-radius: 3px;
-  cursor: move;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><path d='M23 4v6h-6'/><path d='M20.49 15a9 9 0 1 1-2.12-9.36L23 10'/></svg>") 8 8, auto;
   z-index: 100;
+  opacity: 0;
   display: none;
 }
 
-.editor-element:hover .move-handle {
+/* Connection line for rotate handle */
+.editor-element .rotate-line {
+  position: absolute;
+  width: 1px;
+  height: 15px;
+  background-color: #4285f4;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99;
+  opacity: 0;
+  display: none;
+}
+
+.editor-element:hover .rotate-handle,
+.editor-element:hover .rotate-line {
   display: block;
+  opacity: 0.8;
+}
+
+.editor-element.selected .rotate-handle,
+.editor-element.selected .rotate-line {
+  display: block;
+  opacity: 1;
+}
+
+.editor-element .rotate-handle:hover {
+  background-color: #4285f4;
+  border-color: white;
+  transform: scale(1.1) translateX(-45%);
+}
+
+/* Element in dragging state */
+.editor-element.dragging {
+  opacity: 0.7;
+  cursor: move;
+}
+
+/* Element in resizing state */
+.editor-element.resizing {
+  opacity: 0.8;
 }
 
 /* Image specific styles */
 .editor-image {
   min-width: 50px;
   min-height: 50px;
+  resize: both; 
+  overflow: hidden;
 }
 
 .editor-image img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  pointer-events: none; /* Prevent image from interfering with resize */
 }
 
 /* Shape specific styles */
@@ -1039,11 +1019,6 @@
 }
 
 /* Modal styles for image, shape, and line */
-.element-modal-content {
-  width: 400px;
-  max-width: 90%;
-}
-
 .element-options {
   display: flex;
   flex-wrap: wrap;
@@ -1098,75 +1073,6 @@
 
 .file-input {
   display: none;
-}
-
-/* Enhanced Resize Controls CSS */
-
-/* Rotation handle */
-.editor-element .rotate-handle {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background-color: white;
-  border: 1px solid #4285f4;
-  border-radius: 50%;
-  top: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'><path d='M23 4v6h-6'/><path d='M20.49 15a9 9 0 1 1-2.12-9.36L23 10'/></svg>") 8 8, auto;
-  z-index: 100;
-}
-
-/* Connection line for rotate handle */
-.editor-element .rotate-line {
-  position: absolute;
-  width: 1px;
-  height: 15px;
-  background-color: #4285f4;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 99;
-}
-
-/* Hide rotation handle when not selected */
-.editor-element:not(.selected) .rotate-handle,
-.editor-element:not(.selected) .rotate-line {
-  display: none;
-}
-
-/* Show rotation handle when selected */
-.editor-element.selected .rotate-handle,
-.editor-element.selected .rotate-line {
-  display: block;
-}
-
-/* Make handles more visible on hover */
-.editor-element .resize-handle:hover,
-.editor-element .rotate-handle:hover {
-  background-color: #4285f4;
-  border-color: white;
-}
-
-/* Element in dragging state */
-.editor-element.dragging {
-  opacity: 0.7;
-  cursor: move;
-}
-
-/* Element in resizing state */
-.editor-element.resizing {
-  opacity: 0.8;
-}
-
-/* Table dragging styles */
-.editor-table-wrapper {
-  cursor: move;
-  position: relative;
-}
-
-.editor-table-wrapper.dragging {
-  opacity: 0.7;
 }
 
 /* URL input for image modal */

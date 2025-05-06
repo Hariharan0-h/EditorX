@@ -173,18 +173,29 @@ export class EditorXComponent implements AfterViewInit {
       // Set up observer to handle dynamically added tables
       this.observeContentChanges();
     });
-
+  
     setTimeout(() => {
       this.initializeDraggableElements();
     }, 500);
     
-    // Add keyboard event listeners for element deletion
+    // Enhanced keyboard event listeners for element deletion
     document.addEventListener('keydown', (e) => {
       if ((e.key === 'Delete' || e.key === 'Backspace') && this.selectedElement) {
         // Prevent default action for backspace to avoid browser navigation
         if (e.key === 'Backspace') {
           e.preventDefault();
         }
+        
+        // Make sure we're not inside a contenteditable element
+        const activeElement = document.activeElement;
+        if (activeElement && 
+            (activeElement.getAttribute('contenteditable') === 'true' || 
+             activeElement.tagName === 'INPUT' || 
+             activeElement.tagName === 'TEXTAREA')) {
+          // Allow normal deletion within editable elements
+          return;
+        }
+        
         this.deleteSelectedElement();
       }
     });
@@ -195,12 +206,24 @@ export class EditorXComponent implements AfterViewInit {
    */
   deleteSelectedElement(): void {
     if (this.selectedElement) {
-      // If it's a table, check if the entire table is selected or just a cell
+      // If it's a table, or any other editor element
       if (this.selectedElement.tagName === 'TABLE' || 
-          this.selectedElement.classList.contains('editor-element')) {
-        // Remove the entire element and focus back on the editor
-        this.selectedElement.remove();
+          this.selectedElement.classList.contains('editor-element') ||
+          this.selectedElement.classList.contains('editor-table-wrapper')) {
+        
+        // If it's a table wrapper, handle specially
+        if (this.selectedElement.classList.contains('editor-table-wrapper')) {
+          this.selectedElement.remove();
+        } 
+        // Otherwise remove the element directly
+        else {
+          this.selectedElement.remove();
+        }
+        
+        // Reset the selected element reference
         this.selectedElement = null;
+        
+        // Focus back on the editor
         this.focusCurrentEditorCanvas();
       }
     }
@@ -285,13 +308,10 @@ export class EditorXComponent implements AfterViewInit {
           return;
         }
         
-        // Create the image element with enhanced resize controls
+        // Create the image element with enhanced resize controls (removed delete button)
         const imgHtml = `
         <div class="editor-element editor-image" contenteditable="false">
           <img src="${imgSrc}" style="${this.imageWidth ? 'width:' + this.imageWidth + 'px;' : ''} ${this.imageHeight ? 'height:' + this.imageHeight + 'px;' : ''}" alt="Inserted image">
-          
-          <!-- Delete button -->
-          <div class="delete-element-button" title="Delete">×</div>
           
           <!-- Corner handles -->
           <div class="resize-handle top-left"></div>
@@ -378,9 +398,6 @@ export class EditorXComponent implements AfterViewInit {
           case 'rectangle':
             shapeHtml = `
             <div class="editor-element editor-shape shape-rectangle" contenteditable="false" style="width: ${this.shapeWidth}px; height: ${this.shapeHeight}px; background-color: ${this.shapeFillColor}; border: 1px solid ${this.shapeBorderColor};">
-              <!-- Delete button -->
-              <div class="delete-element-button" title="Delete">×</div>
-              
               <!-- Corner handles -->
               <div class="resize-handle top-left"></div>
               <div class="resize-handle top-right"></div>
@@ -404,9 +421,6 @@ export class EditorXComponent implements AfterViewInit {
           case 'circle':
             shapeHtml = `
             <div class="editor-element editor-shape shape-circle" contenteditable="false" style="width: ${this.shapeWidth}px; height: ${this.shapeHeight}px; background-color: ${this.shapeFillColor}; border: 1px solid ${this.shapeBorderColor};">
-              <!-- Delete button -->
-              <div class="delete-element-button" title="Delete">×</div>
-              
               <!-- Corner handles -->
               <div class="resize-handle top-left"></div>
               <div class="resize-handle top-right"></div>
@@ -432,9 +446,6 @@ export class EditorXComponent implements AfterViewInit {
             const halfWidth = Math.round(this.shapeWidth / 2);
             shapeHtml = `
             <div class="editor-element editor-shape" contenteditable="false" style="width: ${this.shapeWidth}px; height: ${this.shapeHeight}px; position: relative;">
-              <!-- Delete button -->
-              <div class="delete-element-button" title="Delete">×</div>
-              
               <div style="width: 0; height: 0; position: absolute; top: 0; left: 0; border-left: ${halfWidth}px solid transparent; border-right: ${halfWidth}px solid transparent; border-bottom: ${this.shapeHeight}px solid ${this.shapeFillColor};"></div>
               
               <!-- Corner handles -->
@@ -522,9 +533,6 @@ export class EditorXComponent implements AfterViewInit {
         if (this.selectedLine === 'horizontal') {
           lineHtml = `
           <div class="editor-element editor-line line-horizontal" contenteditable="false" style="width: ${this.lineLength}px; height: ${this.lineThickness}px; background-color: ${this.lineColor};">
-            <!-- Delete button -->
-            <div class="delete-element-button" title="Delete">×</div>
-            
             <!-- Corner handles -->
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -546,9 +554,6 @@ export class EditorXComponent implements AfterViewInit {
         } else {
           lineHtml = `
           <div class="editor-element editor-line line-vertical" contenteditable="false" style="width: ${this.lineThickness}px; height: ${this.lineLength}px; background-color: ${this.lineColor};">
-            <!-- Delete button -->
-            <div class="delete-element-button" title="Delete">×</div>
-            
             <!-- Corner handles -->
             <div class="resize-handle top-left"></div>
             <div class="resize-handle top-right"></div>
@@ -588,69 +593,66 @@ export class EditorXComponent implements AfterViewInit {
    * Initialize draggable and resizable functionality for all editor elements
    */
   private initializeDraggableElements(): void {
-    const elements = document.querySelectorAll('.editor-element');
-    
-    elements.forEach(element => {
-      const el = element as HTMLElement;
+    setTimeout(() => {
+      const elements = document.querySelectorAll('.editor-element');
       
-      // Skip elements that have already been initialized
-      if (el.dataset['initialized'] === 'true') {
-        return;
-      }
-      
-      // Mark as initialized to avoid duplicate event listeners
-      el.dataset['initialized'] = 'true';
-      
-      // Add click event to select the element
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      elements.forEach(element => {
+        const el = element as HTMLElement;
         
-        // Deselect any previously selected element
-        if (this.selectedElement) {
-          this.selectedElement.classList.remove('selected');
+        // Ensure proper positioning for draggable elements
+        if (window.getComputedStyle(el).position !== 'absolute') {
+          el.style.position = 'absolute';
+          
+          // Get current position instead of using left/top which might be unset
+          const rect = el.getBoundingClientRect();
+          const parentRect = el.parentElement?.getBoundingClientRect() || { left: 0, top: 0 };
+          
+          el.style.left = `${rect.left - parentRect.left}px`;
+          el.style.top = `${rect.top - parentRect.top}px`;
         }
         
-        // Select this element
-        el.classList.add('selected');
-        this.selectedElement = el;
-      });
-      
-      // Make element draggable
-      this.addDragFunctionality(el);
-      
-      // Add resize functionality using all the resize handles
-      const resizeHandles = el.querySelectorAll('.resize-handle, .rotate-handle');
-      resizeHandles.forEach(handle => {
-        this.addResizeFunctionality(el, handle as HTMLElement);
-      });
-      
-      // Add delete functionality to delete buttons
-      const deleteButton = el.querySelector('.delete-element-button');
-      if (deleteButton) {
-        deleteButton.addEventListener('click', (e) => {
+        // Skip elements that have already been initialized
+        if (el.dataset['initialized'] === 'true') {
+          return;
+        }
+        
+        // Mark as initialized to avoid duplicate event listeners
+        el.dataset['initialized'] = 'true';
+        
+        // Add click event to select the element
+        el.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
           
-          // Remove the element
-          el.remove();
-          
-          // Reset selected element if it was this one
-          if (this.selectedElement === el) {
-            this.selectedElement = null;
+          // Deselect any previously selected element
+          if (this.selectedElement) {
+            this.selectedElement.classList.remove('selected');
           }
+          
+          // Select this element
+          el.classList.add('selected');
+          this.selectedElement = el;
         });
-      }
-    });
-    
-    // Add a click event listener to the document to deselect elements
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('.editor-element') && this.selectedElement) {
-        this.selectedElement.classList.remove('selected');
-        this.selectedElement = null;
-      }
-    });
+        
+        // Make element draggable
+        this.addDragFunctionality(el);
+        
+        // Add resize functionality using all the resize handles
+        const resizeHandles = el.querySelectorAll('.resize-handle, .rotate-handle');
+        resizeHandles.forEach(handle => {
+          this.addResizeFunctionality(el, handle as HTMLElement);
+        });
+      });
+      
+      // Add a click event listener to the document to deselect elements
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (!target.closest('.editor-element') && this.selectedElement) {
+          this.selectedElement.classList.remove('selected');
+          this.selectedElement = null;
+        }
+      });
+    }, 300); // Increased timeout for DOM to be fully rendered
   }
 
   /**
@@ -658,6 +660,18 @@ export class EditorXComponent implements AfterViewInit {
    * @param element The element to make draggable
    */
   private addDragFunctionality(element: HTMLElement): void {
+
+    const computedStyle = window.getComputedStyle(element);
+    if (computedStyle.position !== 'absolute') {
+      const rect = element.getBoundingClientRect();
+      const parentRect = element.parentElement?.getBoundingClientRect() || { left: 0, top: 0 };
+      
+      element.style.position = 'absolute';
+      element.style.left = `${rect.left - parentRect.left}px`;
+      element.style.top = `${rect.top - parentRect.top}px`;
+      element.style.width = `${rect.width}px`;
+      element.style.height = `${rect.height}px`;
+    }
     let isDragging = false;
     let startX = 0;
     let startY = 0;
@@ -743,6 +757,45 @@ export class EditorXComponent implements AfterViewInit {
     
     // Add mousedown event listener to the element itself for dragging
     element.addEventListener('mousedown', startDrag);
+  }
+
+  /**
+   * Fix element position and visibility
+   */
+  private fixElementsPositionAndVisibility(): void {
+    // Add a small delay to ensure DOM is ready
+    setTimeout(() => {
+      // Find all editor elements
+      const elements = document.querySelectorAll('.editor-element');
+      
+      elements.forEach(el => {
+        const element = el as HTMLElement;
+        
+        // Ensure proper selection event
+        element.addEventListener('click', (e) => {
+          e.stopPropagation();
+          
+          // Deselect previous elements
+          document.querySelectorAll('.editor-element.selected').forEach(selected => {
+            selected.classList.remove('selected');
+          });
+          
+          // Select current element
+          element.classList.add('selected');
+          this.selectedElement = element;
+        });
+        
+        // Fix element positioning
+        if (window.getComputedStyle(element).position !== 'absolute') {
+          element.style.position = 'absolute';
+          const rect = element.getBoundingClientRect();
+          const parentRect = element.parentElement?.getBoundingClientRect() || { left: 0, top: 0 };
+          
+          element.style.left = `${rect.left - parentRect.left}px`;
+          element.style.top = `${rect.top - parentRect.top}px`;
+        }
+      });
+    }, 300);
   }
 
   /**
@@ -1255,8 +1308,8 @@ export class EditorXComponent implements AfterViewInit {
         selection.removeAllRanges();
         selection.addRange(this.lastSelection);
         
-        // Create HTML for table with inline styles for better visibility
-        let tableHtml = '<div class="editor-table-wrapper" contenteditable="false"><div class="delete-element-button" title="Delete">×</div><table class="editor-table" style="border-collapse: collapse; width: 100%; border: 2px solid #000; margin: 10px 0; table-layout: fixed;">';
+        // Create HTML for table without the delete button
+        let tableHtml = '<div class="editor-table-wrapper" contenteditable="false"><table class="editor-table" style="border-collapse: collapse; width: 100%; border: 2px solid #000; margin: 10px 0; table-layout: fixed;">';
         
         // Add rows and cells
         for (let i = 0; i < this.gridRows; i++) {
@@ -1311,16 +1364,6 @@ export class EditorXComponent implements AfterViewInit {
         let startLeft = 0;
         let startTop = 0;
         
-        // Add delete button functionality
-        const deleteButton = wrapper.querySelector('.delete-element-button');
-        if (deleteButton) {
-          deleteButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            wrapper.remove();
-          });
-        }
-        
         // Ensure the wrapper is properly positioned
         const wrapperEl = wrapper as HTMLElement;
         if (window.getComputedStyle(wrapperEl).position !== 'absolute') {
@@ -1332,11 +1375,10 @@ export class EditorXComponent implements AfterViewInit {
         
         // Add event listener for drag start
         wrapperEl.addEventListener('mousedown', (e) => {
-          // Don't start dragging if clicked on a table cell, resize handle, or delete button
+          // Don't start dragging if clicked on a table cell or resize handle
           if ((e.target as HTMLElement).tagName === 'TD' || 
               (e.target as HTMLElement).tagName === 'TH' ||
-              (e.target as HTMLElement).classList.contains('editor-table-resizer') ||
-              (e.target as HTMLElement).classList.contains('delete-element-button')) {
+              (e.target as HTMLElement).classList.contains('editor-table-resizer')) {
             return;
           }
           
